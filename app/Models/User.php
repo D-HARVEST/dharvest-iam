@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -13,6 +14,19 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
+
+    protected static function booted(): void
+    {
+        static::creating(function (User $user) {
+            if (empty($user->uid) || static::where('uid', $user->uid)->exists()) {
+                do {
+                    $uid = (string) Str::uuid();
+                } while (static::where('uid', $uid)->exists());
+
+                $user->uid = $uid;
+            }
+        });
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -23,6 +37,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'uid',
+        "fcm_token",
     ];
 
     /**
@@ -68,4 +84,5 @@ class User extends Authenticatable
             }
         });
     }
+
 }

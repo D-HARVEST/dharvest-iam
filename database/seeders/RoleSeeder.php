@@ -32,6 +32,11 @@ class RoleSeeder extends Seeder
                 User::class => ['list', 'view', 'create', 'update', 'delete'],
                 Permission::class => ['list', 'view', 'create', 'update', 'delete'],
             ], // All permissions are automatically assigned to Super-admin
+            "M2M" => [
+                Role::class => ['list', 'view'],
+                User::class => ['list', 'view'],
+                Permission::class => ['list', 'view'],
+            ],
 
         ];
 

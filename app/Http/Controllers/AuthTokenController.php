@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class AuthTokenController extends Controller
 {
@@ -62,5 +63,23 @@ class AuthTokenController extends Controller
                 'message' => $e->getMessage(),
             ], 500);
         }
+    }
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+
+        // Récupérer le token actuel de l'utilisateur et le révoquer
+        $token = $user->token();
+
+        if ($token) {
+            $token->revoke();
+        }
+
+        // Effacer toutes les sessions de ce même utilisateur dans la base de données
+        if ($user) {
+            DB::table('sessions')->where('user_id', $user->id)->delete();
+        }
+
+        return response()->json(['message' => 'Successfully logged out']);
     }
 }

@@ -13,4 +13,6 @@ Route::prefix('auth')->group(function () {
     Route::post('/verify-token', [AuthTokenController::class, 'verifyToken'])->name('auth.verify-token');
 });
 
+Route::post('/logout', [AuthTokenController::class, 'logout'])->middleware('auth:api');
+
 require __DIR__ . '/m2m.php';

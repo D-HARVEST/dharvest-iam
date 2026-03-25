@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
 
             'email' => 'admin@admin.com',
         ], [
+            'email_verified_at' => now(),
             'name' => 'Admin',
             'password' => bcrypt('p@ssw0rd'),
             "uid" => Str::uuid()->toString(),

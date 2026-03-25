@@ -45,6 +45,13 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        if (session()->has('oauth_params')) {
+            $params = session('oauth_params');
+            session()->forget('oauth_params');
+
+            return redirect()->route('passport.authorizations.authorize', $params);
+        }
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 }

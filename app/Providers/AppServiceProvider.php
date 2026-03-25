@@ -23,8 +23,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Passport::useClientModel(PassportClient::class);
         Passport::authorizationView('passport.authorize');
-        Passport::tokensExpireIn(now()->addDays(15));
-        Passport::refreshTokensExpireIn(now()->addDays(30));
+        Passport::tokensExpireIn(now()->addYear());
+        Passport::refreshTokensExpireIn(now()->addYears(2));
         Passport::personalAccessTokensExpireIn(now()->addMonths(6));
     }
 }

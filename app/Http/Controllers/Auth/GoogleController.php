@@ -105,6 +105,14 @@ class GoogleController extends Controller
 
         auth()->login($user);
 
+        if (session()->has('oauth_params')) {
+            $params = session('oauth_params');
+            session()->forget('oauth_params');
+
+            return redirect()->route('passport.authorizations.authorize', $params)
+                ->with('message', 'Connexion réussie via Google');
+        }
+
         return redirect()->intended(route('home'))
             ->with('user', $user)
             ->with('message', 'Connexion réussie via Google');

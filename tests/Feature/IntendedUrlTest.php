@@ -17,10 +17,10 @@ class IntendedUrlTest extends TestCase
             'Test Client', ['location.d-harvest.com://auth']
         );
 
-        $authUrl = '/oauth/authorize?client_id=' . $client->id . '&redirect_uri=location.d-harvest.com%3A%2F%2Fauth&response_type=code&scope=&state=123&code_challenge=abc&code_challenge_method=S256';
+        $authUrl = '/oauth/authorize?client_id=' . $client->id . '&redirect_uri=location.d-harvest.com%3A%2F%2Fauth&response_type=code&scope=&state=123&code_challenge=1234567890123456789012345678901234567890123&code_challenge_method=S256';
         
         $response1 = $this->get($authUrl);
-        if ($response1->status() !== 302) {
+        if ($response1->getStatusCode() !== 302) {
             dd($response1->getContent());
         }
         $response1->assertRedirect();

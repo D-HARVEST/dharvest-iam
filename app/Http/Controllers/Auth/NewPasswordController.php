@@ -54,6 +54,9 @@ class NewPasswordController extends Controller
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
+        // En cas de succès, on redirige toujours vers login.
+        // Si oauth_params est en session (flux Passport), AuthenticatedSessionController
+        // s'en chargera automatiquement après la connexion.
         return $status == Password::PASSWORD_RESET
                     ? redirect()->route('login')->with('status', __($status))
                     : back()->withInput($request->only('email'))

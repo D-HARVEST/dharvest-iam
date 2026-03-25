@@ -1,7 +1,51 @@
 <!-- Sidebar -->
 <aside id="sidebar"
-    class="fixed inset-y-0 left-0 z-50 w-64 transform theme-surface  transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 flex flex-col"
+    class="fixed inset-y-0 left-0 z-50 w-64 transform theme-surface transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 flex flex-col overflow-hidden"
     style="transform: translateX(-100%);">
+
+    {{-- ══ Décoration multicolore (blobs) ══ --}}
+    {{-- Vert — haut droite --}}
+    <div class="absolute pointer-events-none"
+        style="width:280px;height:280px;top:-80px;right:-100px;
+               background:radial-gradient(circle,rgba(0,201,81,.22) 0%,transparent 65%);border-radius:50%;z-index:0;"></div>
+    {{-- Bleu ciel — milieu --}}
+    <div class="absolute pointer-events-none"
+        style="width:220px;height:220px;top:35%;left:-80px;
+               background:radial-gradient(circle,rgba(56,189,248,.18) 0%,transparent 65%);border-radius:50%;z-index:0;
+               animation:sidebar-drift 15s ease-in-out infinite;"></div>
+    {{-- Violet — bas droite --}}
+    <div class="absolute pointer-events-none"
+        style="width:240px;height:240px;bottom:-60px;right:-80px;
+               background:radial-gradient(circle,rgba(167,139,250,.18) 0%,transparent 65%);border-radius:50%;z-index:0;"></div>
+    {{-- Orange — bas gauche --}}
+    <div class="absolute pointer-events-none"
+        style="width:180px;height:180px;bottom:20%;left:-50px;
+               background:radial-gradient(circle,rgba(251,146,60,.16) 0%,transparent 65%);border-radius:50%;z-index:0;
+               animation:sidebar-drift 19s ease-in-out infinite 3s;"></div>
+    {{-- Grille de points --}}
+    <div class="absolute inset-0 pointer-events-none"
+        style="background-image:radial-gradient(rgba(0,0,0,.055) 1px,transparent 1px);background-size:22px 22px;z-index:0;"></div>
+    {{-- Anneau décoratif --}}
+    <div class="absolute pointer-events-none"
+        style="top:50%;left:50%;width:340px;height:340px;margin-left:-170px;margin-top:-170px;
+               border:1px solid rgba(0,201,81,.10);border-radius:50%;z-index:0;
+               animation:sidebar-orbit 45s linear infinite;"></div>
+
+    <style>
+        @keyframes sidebar-drift {
+            0%,100% { transform: translateY(0px) translateX(0px); }
+            40%      { transform: translateY(-14px) translateX(7px); }
+            70%      { transform: translateY(8px) translateX(-5px); }
+        }
+        @keyframes sidebar-orbit {
+            from { transform: translate(-50%,-50%) rotate(0deg); }
+            to   { transform: translate(-50%,-50%) rotate(360deg); }
+        }
+    </style>
+
+    {{-- Wrapper z-10 pour passer au-dessus des blobs --}}
+    <div class="relative z-10 flex flex-col flex-1 min-h-0">
+
     <!-- Sidebar Header -->
     <div class="flex h-16 items-center justify-between border-b theme-divider px-6">
         <a href="{{ route('home') }}" class="flex items-center gap-2 font-semibold theme-title">
@@ -121,4 +165,5 @@
             });
         </script>
     </div>
+    </div>{{-- /z-10 wrapper --}}
 </aside>

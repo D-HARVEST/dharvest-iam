@@ -15,21 +15,20 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->redirectGuestsTo(function (\Illuminate\Http\Request $request) {
             if ($request->routeIs('passport.authorizations.authorize')) {
-                // Toujours sauvegarder les paramètres OAuth en session
-                session(['oauth_params' => $request->query()]);
+                // Sauvegarder les paramètres OAuth en session (sans `screen` qui est interne à l'IAM)
+                $oauthParams = collect($request->query())->except('screen')->all();
+                session(['oauth_params' => $oauthParams]);
 
-                if ($request->has('screen')) {
-                    $screen = $request->query('screen');
-                    $params = $request->query();
+                $screen = $request->query('screen', 'login');
 
-                    return match ($screen) {
-                        'register' => route('register', $params),
-                        'forgot-password', 'forgot' => route('password.request', $params),
-                        'google' => route('login.google', $params),
-                        default => route('login', $params),
-                    };
-                }
+                return match ($screen) {
+                    'register'                      => route('register'),
+                    'forgot-password', 'forgot'     => route('password.request'),
+                    'google'                        => route('login.google', $oauthParams),
+                    default                         => route('login'),
+                };
             }
+
             return $request->expectsJson() ? null : route('login');
         });
 

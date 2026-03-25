@@ -22,10 +22,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 $screen = $request->query('screen', 'login');
 
                 return match ($screen) {
-                    'register'                      => route('register'),
-                    'forgot-password', 'forgot'     => route('password.request'),
-                    'google'                        => route('login.google', $oauthParams),
-                    default                         => route('login'),
+                    'register' => route('register'),
+                    'forgot-password', 'forgot' => route('password.request'),
+                    'google' => route('login.google', $oauthParams),
+                    default => route('login'),
                 };
             }
 

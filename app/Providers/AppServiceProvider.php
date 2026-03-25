@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Passport::useClientModel(PassportClient::class);
+        // Passport::useClientModel(PassportClient::class);
         Passport::authorizationView('passport.authorize');
         Passport::tokensExpireIn(now()->addYear());
         Passport::refreshTokensExpireIn(now()->addYears(2));

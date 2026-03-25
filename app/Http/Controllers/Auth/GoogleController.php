@@ -16,8 +16,9 @@ class GoogleController extends Controller
 {
     public function redirectToGoogle()
     {
-        if (request()->has('redirect_uri')) {
-            Session::put('redirect_to', request()->get('redirect_uri'));
+
+        if (request()->has('client_id')) {
+            session(['oauth_params' => request()->query()]);
         }
         return Socialite::driver('google')->redirect();
     }
@@ -54,21 +55,21 @@ class GoogleController extends Controller
     //     return redirect()->route('otp', ['user_id' => $user->id])
     //         ->with('message', 'Inscription réussie via Google. Vérifiez votre email pour l’OTP.');
     // }
-    static function redirectForFlutter(User $user)
-    {
-        if (Session::has('redirect_to')) {
-            $redirectTo = Session::get('redirect_to');
-            $url = Session::forget('redirect_to');
-            $token = $user->createToken('Google')->plainTextToken;
-            $redirectTo .= "?token=$token";
-            // Session::forget('redirect_to');
-            // auth()->login($user);
-            // return response('', 302)
-            //     ->header('Location', $redirectTo);
-            // return redirect()->away($redirectTo);
-            return view('auth.google-redirect', ['redirect_url' => $redirectTo, "user" => $user]);
-        }
-    }
+    // static function redirectForFlutter(User $user)
+    // {
+    //     if (Session::has('redirect_to')) {
+    //         $redirectTo = Session::get('redirect_to');
+    //         $url = Session::forget('redirect_to');
+    //         $token = $user->createToken('Google')->plainTextToken;
+    //         $redirectTo .= "?token=$token";
+    //         // Session::forget('redirect_to');
+    //         // auth()->login($user);
+    //         // return response('', 302)
+    //         //     ->header('Location', $redirectTo);
+    //         // return redirect()->away($redirectTo);
+    //         return view('auth.google-redirect', ['redirect_url' => $redirectTo, "user" => $user]);
+    //     }
+    // }
 
     public function handleGoogleCallback()
     {
@@ -89,21 +90,23 @@ class GoogleController extends Controller
                 "photo" => $googleUser->avatar,
             ]);
 
-            if (Session::has('redirect_to')) {
-                return self::redirectForFlutter($user);
-            }
-            // Redirection immédiate vers la page de complétion du profil
-            // return redirect()->route('complete-profile-vue', ['user_id' => $user->id])
-            //     ->with('message', 'Veuillez compléter votre profil avant de continuer.');
+        } else {
+            // Si l'utilisateur existe déjà , on le met à jour
+
+            $user->update([
+                'email_verified_at' => now(),
+                'google_id' => $googleUser->id,
+                'photo' => $googleUser->avatar,
+            ]);
+
         }
-        if (Session::has('redirect_to')) {
-            return self::redirectForFlutter($user);
-        }
+
 
 
         auth()->login($user);
 
-        return redirect()->route('home')
+        return redirect()->intended(route('home'))
+            ->with('user', $user)
             ->with('message', 'Connexion réussie via Google');
     }
 }

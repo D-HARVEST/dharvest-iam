@@ -13,6 +13,21 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->redirectGuestsTo(function (\Illuminate\Http\Request $request) {
+            if ($request->routeIs('passport.authorizations.authorize') && $request->has('screen')) {
+                $screen = $request->query('screen');
+                $params = $request->query();
+
+                return match ($screen) {
+                    'register' => route('register', $params),
+                    'forgot-password', 'forgot' => route('password.request', $params),
+                    'google' => route('login.google', $params),
+                    default => route('login', $params),
+                };
+            }
+            return $request->expectsJson() ? null : route('login');
+        });
+
         $middleware->alias([
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,

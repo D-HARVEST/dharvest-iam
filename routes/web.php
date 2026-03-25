@@ -1,10 +1,17 @@
 <?php
 
+use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\OauthClientController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\File;
+
+
+
+Route::get('/login/google', [GoogleController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('/login/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+
 Route::redirect('/', '/profile')->name('home');
 
 Route::get('/dashboard', function () {

@@ -45,6 +45,10 @@ return [
             'driver' => 'passport',
             'provider' => 'users',
         ],
+        'device-api' => [
+            'driver' => 'passport',
+            'provider' => 'devices',
+        ],
     ],
 
     /*
@@ -68,6 +72,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+        'devices' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_DEVICE_MODEL', App\Models\Sensor::class),
         ],
 
         // 'users' => [

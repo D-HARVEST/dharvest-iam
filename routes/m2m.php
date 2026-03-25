@@ -11,5 +11,8 @@ Route::prefix('m2m')->middleware("client.credentials")->group(function () {
     Route::post('/update-user/{uid}', [UserController::class, 'updateUser']);
     Route::delete('/delete-user/{uid}', [UserController::class, 'deleteUser']);
     Route::post('/regenerate-password/{uid}', [UserController::class, 'regeneratePassword']);
+
+    //capteur , route non utilisee pour le moment
+    // Route::post('/get-jwt-for-sensor', [UserController::class, 'getJwtForSensor']);
 });
 

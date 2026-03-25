@@ -22,28 +22,29 @@
             <i class="ti ti-dashboard text-xl"></i>
             <span>Tableau de bord</span>
         </a>
+        @role('Super-admin')
+            <div class="pb-2 pt-4">
+                <h3 class="px-3 text-xs font-semibold uppercase tracking-wider theme-muted-text">
+                    Administrateur
+                </h3>
+            </div>
 
-        <div class="pb-2 pt-4">
-            <h3 class="px-3 text-xs font-semibold uppercase tracking-wider theme-muted-text">
-                Administrateur
-            </h3>
-        </div>
-
-        <a href="{{ route('users.index') }}" data-route="users.index"
-            class="app-nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition theme-body hover-theme-muted">
-            <i class="ti ti-users text-xl"></i>
-            <span>Utilisateurs</span>
-        </a>
-        <a href="{{ route('roles.index') }}" data-route="roles.index"
-            class="app-nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition theme-body hover-theme-muted">
-            <i class="ti ti-lock-access text-xl"></i>
-            <span>Rôles</span>
-        </a>
-        <a href="{{ route('oauth-clients.index') }}" data-route="oauth-clients.index"
-            class="app-nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition theme-body hover-theme-muted">
-            <i class="ti ti-key text-xl"></i>
-            <span>Clients OAuth</span>
-        </a>
+            <a href="{{ route('users.index') }}" data-route="users.index"
+                class="app-nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition theme-body hover-theme-muted">
+                <i class="ti ti-users text-xl"></i>
+                <span>Utilisateurs</span>
+            </a>
+            <a href="{{ route('roles.index') }}" data-route="roles.index"
+                class="app-nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition theme-body hover-theme-muted">
+                <i class="ti ti-lock-access text-xl"></i>
+                <span>Rôles</span>
+            </a>
+            <a href="{{ route('oauth-clients.index') }}" data-route="oauth-clients.index"
+                class="app-nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition theme-body hover-theme-muted">
+                <i class="ti ti-key text-xl"></i>
+                <span>Clients OAuth</span>
+            </a>
+        @endrole
         {{-- //profile --}}
         <a href="{{ route('profile.edit') }}" data-route="profile.edit"
             class="app-nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition theme-body hover-theme-muted">

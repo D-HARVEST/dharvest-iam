@@ -32,8 +32,9 @@ Route::middleware('auth')->group(function () {
         auth()->logout();
         request()->session()->invalidate();
         request()->session()->regenerateToken();
-        // Redirige vers /oauth/authorize → le middleware guest sauvegarde les params et envoie vers /login
-        return redirect()->route('passport.authorizations.authorize', $params);
+        // Sauvegarde les params dans la session fraîche → AuthenticatedSessionController les utilisera après login
+        session(['oauth_params' => $params]);
+        return redirect()->route('login');
     })->name('oauth.confirm-session.switch');
 });
 

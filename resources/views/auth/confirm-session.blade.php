@@ -16,25 +16,29 @@
 @section('content')
 
     {{-- Compte actif --}}
-    <div class="anim-fade-up flex items-center gap-4 rounded-2xl theme-muted p-4 mb-5">
-        <div class="size-10 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
-            <i class="ti ti-user text-primary text-lg"></i>
+    <div class="anim-fade-up rounded-2xl theme-muted p-4 mb-5">
+        <div class="flex items-center gap-3 min-w-0">
+            <div class="size-10 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
+                <i class="ti ti-user text-primary text-lg"></i>
+            </div>
+            <div class="min-w-0 flex-1">
+                <p class="text-sm font-semibold theme-title truncate">{{ Auth::user()->name }}</p>
+                <p class="text-xs theme-body mt-0.5 truncate">{{ Auth::user()->email }}</p>
+            </div>
         </div>
-        <div class="min-w-0 flex-1">
-            <p class="text-sm font-semibold theme-title truncate">{{ Auth::user()->name }}</p>
-            <p class="text-xs theme-body mt-0.5 truncate">{{ Auth::user()->email }}</p>
+        <div class="mt-2 ml-13">
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium px-2.5 py-1">
+                <span class="size-1.5 rounded-full bg-green-500 inline-block"></span>
+                Session active
+            </span>
         </div>
-        <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium px-2.5 py-1 shrink-0">
-            <span class="size-1.5 rounded-full bg-green-500 inline-block"></span>
-            Actif
-        </span>
     </div>
 
     {{-- Barre de progression --}}
     <div class="anim-fade-up-1 mb-5">
         <div class="flex items-center justify-between mb-2">
-            <span class="text-xs text-gray-400 dark:text-gray-500">Redirection automatique dans</span>
-            <span id="countdown" class="text-xs font-semibold text-primary tabular-nums">3s</span>
+            <span class="text-xs text-gray-400 dark:text-gray-500">Redirection dans</span>
+            <span id="countdown" class="text-xs font-semibold text-primary tabular-nums">4s</span>
         </div>
         <div class="h-1.5 w-full rounded-full bg-gray-100 dark:bg-white/[0.07] overflow-hidden">
             <div id="progress-bar" class="h-full rounded-full bg-primary" style="width: 100%"></div>
@@ -71,20 +75,20 @@
     </form>
 
     <script>
-        (function () {
-            const DURATION = 3000;
+        (function() {
+            const DURATION = 4000;
             const bar = document.getElementById('progress-bar');
             const countdown = document.getElementById('countdown');
             const startTime = Date.now();
 
             // Démarrer l'animation de la barre
-            requestAnimationFrame(function () {
+            requestAnimationFrame(function() {
                 bar.style.transition = 'width ' + DURATION + 'ms linear';
                 bar.style.width = '0%';
             });
 
             // Mettre à jour le compteur
-            const interval = setInterval(function () {
+            const interval = setInterval(function() {
                 const elapsed = Date.now() - startTime;
                 const remaining = Math.ceil((DURATION - elapsed) / 1000);
                 countdown.textContent = Math.max(remaining, 0) + 's';
@@ -92,7 +96,7 @@
             }, 200);
 
             // Soumettre automatiquement
-            setTimeout(function () {
+            setTimeout(function() {
                 document.getElementById('continue-form').submit();
             }, DURATION);
         })();

@@ -32,6 +32,10 @@ return Application::configure(basePath: dirname(__DIR__))
             return $request->expectsJson() ? null : route('login');
         });
 
+        $middleware->web(append: [
+            \App\Http\Middleware\RequireOAuthSessionConfirmation::class,
+        ]);
+
         $middleware->alias([
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,

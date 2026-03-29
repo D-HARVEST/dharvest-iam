@@ -12,6 +12,31 @@ use Illuminate\Support\Facades\File;
 Route::get('/login/google', [GoogleController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/login/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
+// Confirmation de session active lors d'un flux OAuth
+Route::middleware('auth')->group(function () {
+    Route::get('/oauth/confirm-session', function () {
+        if (!session()->has('oauth_confirm_params')) {
+            return redirect()->route('home');
+        }
+        return view('auth.confirm-session');
+    })->name('oauth.confirm-session');
+
+    Route::post('/oauth/confirm-session/continue', function () {
+        session(['oauth_session_confirmed' => true]);
+        $params = session()->pull('oauth_confirm_params', []);
+        return redirect()->route('passport.authorizations.authorize', $params);
+    })->name('oauth.confirm-session.continue');
+
+    Route::post('/oauth/confirm-session/switch', function () {
+        $params = session()->pull('oauth_confirm_params', []);
+        auth()->logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+        // Redirige vers /oauth/authorize → le middleware guest sauvegarde les params et envoie vers /login
+        return redirect()->route('passport.authorizations.authorize', $params);
+    })->name('oauth.confirm-session.switch');
+});
+
 Route::redirect('/', '/profile')->name('home');
 
 Route::get('/dashboard', function () {
